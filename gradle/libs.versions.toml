@@ -1,9 +1,11 @@
 [versions]
+nebulaRelease = "20.2.0"
+openapiGenerator = "7.13.0"
 spotless = "7.0.3"
 versions = "0.52.0"
-openapiGenerator = "7.13.0"
 
 [plugins]
-versions = { id = "com.github.ben-manes.versions", version.ref = "versions" }
-spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+nebulaRelease = { id = "nebula.release", version.ref = "nebulaRelease"}
 openapiGenerator = { id = "org.openapi.generator", version.ref = "openapiGenerator" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+versions = { id = "com.github.ben-manes.versions", version.ref = "versions" }
