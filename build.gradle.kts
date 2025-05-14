@@ -2,6 +2,8 @@ plugins {
   alias(libs.plugins.versions)
   alias(libs.plugins.spotless)
   alias(libs.plugins.openapiGenerator)
+  alias(libs.plugins.nebulaRelease)
+  `maven-publish`
 }
 
 group = "com.davidjlynn"
