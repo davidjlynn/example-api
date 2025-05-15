@@ -30,14 +30,14 @@ tasks.check { dependsOn(tasks.openApiValidate) }
 
 node {
   download = true
-  version = "22.11.0"
+  version = libs.versions.node.get()
 }
 
 tasks.register<NpxTask>("openApiBundle") {
   group = "openapi tools"
   inputs.files(fileTree("build/generated/openapi-files"))
   outputs.dir("build/generated/openapi-bundled")
-  command = "@redocly/cli@1.25.11"
+  command = "@redocly/cli@${libs.versions.redocly.get()}"
   args =
     listOf<String>(
       "bundle",
