@@ -15,40 +15,37 @@ repositories { mavenCentral() }
 
 val yaml by configurations.creating
 
-tasks.register<Copy>("updateVersionInOpenapiSpec") {
-  from ("src/main/openapi")
-  into ("build/generated/openapi-files")
+val updateVersionInOpenapiSpecTask =
+  tasks.register<Copy>("updateVersionInOpenapiSpec") {
+    from("src/main/openapi")
+    into("build/generated/openapi-files")
+    expand("version" to "${project.version}")
+  }
 
-  val fullVersion = project.version
+openApiValidate { inputSpec.set("build/generated/openapi-files/openapi.yaml") }
 
-//  filter {
-//       line -> line.replaceAll("FULL_API_VERSION", "$fullVersion")
-//  }
-}
+tasks.openApiValidate { dependsOn(updateVersionInOpenapiSpecTask) }
 
-openApiValidate {
-  inputSpec.set("build/generated/openapi-files/openapi.yaml")
-//  dependsOn(tasks.updateVersionInOpenapiSpec)
-}
-//tasks.check.dependsOn(tasks.openApiValidate)
+tasks.check { dependsOn(tasks.openApiValidate) }
 
 node {
   download = true
   version = "22.11.0"
 }
 
-tasks.register<NpxTask>("openApiBundle"){
+tasks.register<NpxTask>("openApiBundle") {
   group = "openapi tools"
   inputs.files(fileTree("build/generated/openapi-files"))
   outputs.dir("build/generated/openapi-bundled")
   command = "@redocly/cli@1.25.11"
-//  args = [
-//    "bundle",
-//  "build/generated/openapi-files/openapi.yaml",
-//  "-o",
-//  "build/generated/openapi-bundled/openapi.yaml"
-//  ]
-//  dependsOn(tasks.updateVersionInOpenapiSpec)
+  args =
+    listOf<String>(
+      "bundle",
+      "build/generated/openapi-files/openapi.yaml",
+      "-o",
+      "build/generated/openapi-bundled/openapi.yaml",
+    )
+  dependsOn(updateVersionInOpenapiSpecTask)
 }
 
 spotless {
@@ -69,14 +66,12 @@ spotless {
 }
 
 val openapiFile = layout.buildDirectory.file("build/generated/openapi-files/openapi.yaml")
-val myOpenapi = artifacts.add("yaml", openapiFile.get().asFile) {
-  builtBy("openApiBundle")
-}
+val myOpenapi = artifacts.add("yaml", openapiFile.get().asFile) { builtBy("openApiBundle") }
 
 publishing {
   publications {
     create<MavenPublication>("openapi") {
-      artifact ( myOpenapi)
+      artifact(myOpenapi)
       artifactId = "example-api"
       groupId = "com.davidjlynn"
     }
