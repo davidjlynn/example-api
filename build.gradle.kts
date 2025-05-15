@@ -65,7 +65,7 @@ spotless {
   kotlinGradle { ktfmt().googleStyle() }
 }
 
-val openapiFile = layout.buildDirectory.file("build/generated/openapi-files/openapi.yaml")
+val openapiFile = layout.buildDirectory.file("generated/openapi-bundled/openapi.yaml")
 val myOpenapi = artifacts.add("yaml", openapiFile.get().asFile) { builtBy("openApiBundle") }
 
 publishing {
