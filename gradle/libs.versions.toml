@@ -2,7 +2,7 @@
 nebulaRelease = "20.2.0"
 node = "24.0.2"
 nodeGradle = "7.1.0"
-openapiGenerator = "7.14.0"
+openapiGenerator = "7.16.0"
 redocly = "1.34.3"
 spotless = "7.2.1"
 versions = "0.52.0"
