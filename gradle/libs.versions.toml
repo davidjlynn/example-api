@@ -1,5 +1,5 @@
 [versions]
-nebulaRelease = "20.2.0"
+nebulaRelease = "21.0.0"
 node = "24.0.2"
 nodeGradle = "7.1.0"
 openapiGenerator = "7.16.0"
